@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "976358883124",
+    "project_id": "flutteryapita",
+    "storage_bucket": "flutteryapita.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976358883124:android:418b379849807de436ef61",
+        "android_client_info": {
+          "package_name": "com.example.nuevoyapita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976358883124-9bfjvm25ee9u6tr1vgt8hojaesltkhrb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq0lAsSzuqJQ1--Hss9fZudYajrt4Gr4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976358883124-9bfjvm25ee9u6tr1vgt8hojaesltkhrb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "976358883124-49fjf0qtr9amulivvdhu7b061gm053rr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nuevoyapita"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976358883124:android:a5ab4bdb2ced834d36ef61",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976358883124-9bfjvm25ee9u6tr1vgt8hojaesltkhrb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq0lAsSzuqJQ1--Hss9fZudYajrt4Gr4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976358883124-9bfjvm25ee9u6tr1vgt8hojaesltkhrb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "976358883124-49fjf0qtr9amulivvdhu7b061gm053rr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nuevoyapita"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
