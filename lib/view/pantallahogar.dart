@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nuevoyapita/services/authservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:nuevoyapita/utils/globalcolors.dart';
 
 class PantallaHogar extends StatefulWidget {
   const PantallaHogar({super.key});
@@ -34,7 +34,6 @@ class _PantallaHogarState extends State<PantallaHogar> {
           _cargando = false;
         });
 
-        // Escuchar cambios en tiempo real
         _mascotaSubscription = FirebaseFirestore.instance
             .collection('mascotas')
             .doc(mascotaSnapshot.id)
@@ -107,25 +106,9 @@ class _PantallaHogarState extends State<PantallaHogar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/fondo.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: const BoxDecoration(),
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              color: const Color(0xFFFFEA96),
-              child: Image.asset(
-                'assets/yapitatext.png',
-                height: 80,
-                width: 200,
-                fit: BoxFit.contain,
-              ),
-            ),
             Expanded(
               child: SafeArea(
                 child: _cargando
@@ -135,132 +118,154 @@ class _PantallaHogarState extends State<PantallaHogar> {
                     : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 0),
-
-                    // Información de la mascota
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Energía
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.flash_on, size: 24),
-                          label: Text("${_obtenerEnergia()}"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFEA96),
-                            foregroundColor: const Color(0xFF9A2727),
-                            textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                          ),
-                        ),
-                        // Cashback
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.attach_money, size: 24),
-                          label: Text("${_obtenerCashback().toStringAsFixed(2)}"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFEA96),
-                            foregroundColor: const Color(0xFF9A2727),
-                            textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-
                     const SizedBox(height: 20),
-
-                    // Puntos y Nivel
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Puntos
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.star, size: 24),
-                          label: Text("${_obtenerPuntos()}"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFEA96),
-                            foregroundColor: const Color(0xFF9A2727),
-                            textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                    // Fila con logo Yapita a la izquierda y datos a la derecha
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Logo Yapita (cuadrado)
+                          Container(
+                            width: 80,
+                            height: 130,
+                            decoration: BoxDecoration(
+                              color: GlobalColors.mainColor,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                          ),
-                        ),
-                        // Nivel
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.trending_up, size: 24),
-                          label: Text("Nvl ${_obtenerNivel()}"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFEA96),
-                            foregroundColor: const Color(0xFF9A2727),
-                            textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            child: const Icon(
+                              Icons.pets,
+                              color: Colors.white,
+                              size: 40,
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                           ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: GlobalColors.mainColor,
+                                    borderRadius:
+                                    BorderRadius.circular(60),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        _obtenerNombreMascota(),
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Nvl ${_obtenerNivel()}",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton.icon(
+                                            onPressed: () {},
+                                            icon: const Icon(Icons.flash_on, size: 24),
+                                            label: Text("${_obtenerEnergia()}"),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: GlobalColors.mainColor,
+                                              foregroundColor: Colors.white,
+                                              textStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                                            ),
+                                          ),
 
-                    const SizedBox(height: 20),
 
-                    // Nombre de la mascota
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFEA96),
-                        borderRadius: BorderRadius.circular(20),
+                                          ElevatedButton.icon(
+                                            onPressed: () {},
+                                            icon: const Icon(Icons.attach_money, size: 24),
+                                            label: Text("${_obtenerCashback().toStringAsFixed(2)}"),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: GlobalColors.mainColor,
+                                              foregroundColor: Colors.white,
+                                              textStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                                            ),
+                                          ),
+
+
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Text(
-                        _obtenerNombreMascota(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF9A2727),
-                        ),
-                      ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 40),
 
-
-
-                    const SizedBox(height: 20),
-
-                    // BOTÓN DE RANKING
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.emoji_events, size: 24),
-                      label: const Text("Ranking"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFEA96),
-                        foregroundColor: const Color(0xFF9A2727),
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40),
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.emoji_events, size: 24),
+                          label: const Text(""),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: GlobalColors.mainColor,
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 16),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                       ),
                     ),
 
                     const Spacer(),
 
-                    // Información del estado
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(10),
@@ -287,9 +292,9 @@ class _PantallaHogarState extends State<PantallaHogar> {
 
       // 🔽 Menú inferior
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFFFFEA96),
-        selectedItemColor: const Color(0xFF9A2727),
-        unselectedItemColor: const Color(0xFF9A2727),
+        backgroundColor: GlobalColors.mainColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.checkroom),

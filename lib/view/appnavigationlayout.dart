@@ -47,7 +47,6 @@ class AppNavigationLayout extends StatelessWidget {
       );
 
       if (confirmar == true) {
-        // Mostrar loading
         Get.dialog(
           const Center(
             child: CircularProgressIndicator(),
@@ -55,10 +54,8 @@ class AppNavigationLayout extends StatelessWidget {
           barrierDismissible: false,
         );
 
-        // Cerrar sesión en Firebase
         await authService.value.firebaseAuth.signOut();
 
-        // Cerrar loading
         Get.back();
 
 
@@ -72,7 +69,6 @@ class AppNavigationLayout extends StatelessWidget {
         );
       }
     } catch (e) {
-      // Cerrar loading si hay error
       Get.back();
 
       Get.snackbar(
@@ -96,7 +92,6 @@ class AppNavigationLayout extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Información del usuario
               FutureBuilder<Map<String, dynamic>?>(
                 future: authService.value.getUserData(authService.value.currentUser!.uid),
                 builder: (context, snapshot) {
@@ -247,12 +242,11 @@ class AppNavigationLayout extends StatelessWidget {
             ],
           ),
 
-          // Botón Home
           Positioned(
             top: 20,
             right: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.orange,
+              backgroundColor: Colors.blue,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -263,24 +257,23 @@ class AppNavigationLayout extends StatelessWidget {
             ),
           ),
 
-          // Botón rectangular personalizado - GRABACIÓN DE VIDEO
           Positioned(
-            bottom: 20,
-            right: 20,
-            left: 20,
+            bottom: 60,
+            right: 100,
+            left: 100,
             child: Container(
-              height: 60,
+              height: 80,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Colors.green, Colors.lightGreen],
+                  colors: [Colors.blue, Colors.lightGreen],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(55),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
-                    blurRadius: 10,
+                    blurRadius: 5,
                     offset: const Offset(0, 5),
                   ),
                 ],
@@ -288,7 +281,7 @@ class AppNavigationLayout extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(80),
                   onTap: () => _abrirGrabacionVideo(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -298,9 +291,9 @@ class AppNavigationLayout extends StatelessWidget {
                         color: Colors.white,
                         size: 28,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 2),
                       Text(
-                        'GRABAR GESTOS DE BASURA',
+                        'ATRAPA YA',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,

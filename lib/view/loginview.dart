@@ -96,18 +96,16 @@ class LoginView extends StatelessWidget {
                 const SizedBox(height: 20),
                 Container(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Logo',
-                    style: TextStyle(
-                      color: GlobalColors.mainColor,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Image.asset(
+                    'assets/images/logo222.png',
+                    width: 200, // Ajusta el tamaño según necesites
+                    height: 100,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(height: 50),
                 Text(
-                  'Login to your account',
+                  'Ingresa tu cuenta',
                   style: TextStyle(
                     color: GlobalColors.textColor,
                     fontSize: 16,
@@ -118,14 +116,14 @@ class LoginView extends StatelessWidget {
                 // Campo de email
                 TextFormGlobal(
                   controller: emailController,
-                  text: 'Email',
+                  text: 'Correo',
                   obscure: false,
                   textInputType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 15),
                 TextFormGlobal(
                   controller: passwordController,
-                  text: 'Password',
+                  text: 'Contraseña',
                   obscure: true,
                   textInputType: TextInputType.text,
                 ),
