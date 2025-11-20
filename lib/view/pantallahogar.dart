@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nuevoyapita/services/authservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nuevoyapita/utils/globalcolors.dart';
-
 import 'chat_mascota_view.dart';
 
 class PantallaHogar extends StatefulWidget {
@@ -106,6 +104,8 @@ class _PantallaHogarState extends State<PantallaHogar> {
 
   @override
   Widget build(BuildContext context) {
+    final estaDespierto = _estaDespierto();
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(),
@@ -206,8 +206,6 @@ class _PantallaHogarState extends State<PantallaHogar> {
                                               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                                             ),
                                           ),
-
-
                                           ElevatedButton.icon(
                                             onPressed: () {},
                                             icon: const Icon(Icons.attach_money, size: 24),
@@ -222,11 +220,8 @@ class _PantallaHogarState extends State<PantallaHogar> {
                                               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                                             ),
                                           ),
-
-
                                         ],
                                       ),
-
                                     ],
                                   ),
                                 ),
@@ -261,19 +256,42 @@ class _PantallaHogarState extends State<PantallaHogar> {
                       ),
                     ),
 
+                    // 🔽 IMAGEN DE LA YAPITA
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Image.asset(
+                        estaDespierto
+                            ? 'assets/images/despierto.png'
+                            : 'assets/images/durmiendo.png',
+                        width: 400,
+                        height: 400,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
 
-
+                    // 🔽 BOTÓN DEL CHATBOT (MODIFICADO)
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: ElevatedButton.icon(
-                        onPressed: () {
-                          // Navegar al chatbot
+                        onPressed: estaDespierto ? () {
+                          // Navegar al chatbot solo si está despierto
                           Get.to(() => const ChatPage());
-                        },
-                        icon: const Icon(Icons.chat_bubble, size: 24),
-                        label: const Text("Hablar con Chapa 🤪"),
+                        } : null, // null desactiva el botón
+                        icon: Icon(
+                          Icons.chat_bubble,
+                          size: 24,
+                          color: estaDespierto ? Colors.white : Colors.grey,
+                        ),
+                        label: Text(
+                          estaDespierto ? "Hablar con Chapa 🤪" : "Falta energía",
+                          style: TextStyle(
+                            color: estaDespierto ? Colors.white : Colors.grey,
+                          ),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: GlobalColors.mainColor,
+                          backgroundColor: estaDespierto
+                              ? GlobalColors.mainColor
+                              : Colors.grey[300],
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                           textStyle: const TextStyle(
@@ -284,27 +302,7 @@ class _PantallaHogarState extends State<PantallaHogar> {
                       ),
                     ),
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          _estaDespierto()
-                              ? '¡${_obtenerNombreMascota()} está activo!'
-                              : '${_obtenerNombreMascota()} está durmiendo',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),

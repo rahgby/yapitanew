@@ -15,7 +15,7 @@ class MascotaService {
         'id': mascotaId,
         'estado': 1, // Default 1
         'nombre': 'Mascota$mascotaId', // Nombre por defecto
-        'energia': 0, // Comienza en 0
+        'energia': 30, // Comienza con 30 para testing
         'puntos': 0, // Comienza en 0
         'cashback': 0, // Comienza en 0
         'nivel': 0, // Comienza en 0
@@ -33,6 +33,8 @@ class MascotaService {
   // Obtener mascota por usuario
   Future<DocumentSnapshot> getMascotaByUserId(String userId) async {
     try {
+      print('🔍 Buscando mascota para usuario: $userId');
+
       final query = await firestore
           .collection('mascotas')
           .where('userId', isEqualTo: userId)
@@ -40,11 +42,15 @@ class MascotaService {
           .get();
 
       if (query.docs.isNotEmpty) {
-        return query.docs.first;
+        final mascota = query.docs.first;
+        print('✅ Mascota encontrada: ${mascota.id}');
+        return mascota;
       }
+
+      print('❌ No se encontró mascota para este usuario: $userId');
       throw Exception('No se encontró mascota para este usuario');
     } catch (e) {
-      print('Error al obtener mascota: $e');
+      print('❌ Error al obtener mascota: $e');
       rethrow;
     }
   }

@@ -8,7 +8,6 @@ import 'package:nuevoyapita/view/pantallahogar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 class PantallaGrabacion extends StatefulWidget {
   const PantallaGrabacion({super.key});
 
@@ -168,11 +167,13 @@ class _PantallaGrabacionState extends State<PantallaGrabacion> {
   void _mostrarResultadoAnalisis({required bool exitoso}) {
     showDialog(
       context: context,
+      barrierDismissible: false, // Evita que el usuario cierre tocando fuera
       builder: (context) => AlertDialog(
         title: Text(
           exitoso ? '¡Éxito!' : 'Intenta nuevamente',
           style: TextStyle(
             color: exitoso ? Colors.green : Colors.orange,
+            fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
@@ -183,19 +184,31 @@ class _PantallaGrabacionState extends State<PantallaGrabacion> {
         actions: [
           TextButton(
             onPressed: () async {
-              Navigator.pop(context);
+              // Cerrar el diálogo actual
+              Navigator.of(context).pop();
+
               if (exitoso) {
                 // AUMENTAR ENERGÍA EN LA BASE DE DATOS
                 await _aumentarEnergiaMascota();
 
-                // Volver al hogar para ver la mascota actualizada
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => PantallaHogar()),
-                );
+                // 🔽 Navegar a PantallaHogar usando GetX
+                Get.offAll(() => PantallaHogar());
+
+                // Alternativa usando Navigator tradicional:
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => PantallaHogar()),
+                //   (route) => false,
+                // );
               }
             },
-            child: Text('ACEPTAR'),
+            child: Text(
+              'ACEPTAR',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ),
         ],
       ),

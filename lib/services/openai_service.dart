@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class OpenAIService {
-  // 🔑 Tu API KEY de Google AI
-  static const String apiKey = "AIzaSyD-gJ8FQjHFxM9vzpkGj4Sx-3TjG3BgBMA";
+  // 🔑 Tu NUEVA API KEY de Google AI
+  static const String apiKey = "AIzaSyBdTbeYxsvokHXvBFb2KRc85VTMy2NIItM";
 
-  // 🌟 Modelo recomendado (rápido, barato y estable)
-  static const String model = "gemini-1.5-flash";
+  // 🌟 Modelos disponibles (usa uno de estos)
+  static const String model = "gemini-pro"; // Modelo estable y disponible
+  // static const String model = "gemini-1.0-pro"; // Alternativa
 
   static Future<String?> sendMessage(String message) async {
     final url = Uri.parse(
@@ -16,7 +17,6 @@ class OpenAIService {
     final body = {
       "contents": [
         {
-          "role": "user",
           "parts": [
             {"text": message}
           ]
@@ -37,7 +37,7 @@ class OpenAIService {
 
       final Map<String, dynamic> data = jsonDecode(response.body);
 
-      // ✔️ GEMINI siempre responde en: candidates[0].content.parts[0].text
+      // ✔️ GEMINI responde en: candidates[0].content.parts[0].text
       final text = data["candidates"]?[0]?["content"]?["parts"]?[0]?["text"];
 
       return text ?? "(Respuesta vacía 😅)";

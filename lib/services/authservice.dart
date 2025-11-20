@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'mascotaservice.dart';
-import 'transaccionesservice.dart'; // Importa el nuevo servicio
+import 'transaccionesservice.dart';
 
 ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
@@ -10,7 +10,7 @@ class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final MascotaService mascotaService = MascotaService();
-  final TransaccionesService transaccionesService = TransaccionesService(); // Nuevo servicio
+  final TransaccionesService transaccionesService = TransaccionesService();
 
   User? get currentUser => firebaseAuth.currentUser;
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
@@ -90,5 +90,76 @@ class AuthService {
       tipoMovimiento: 'aumento',
       descripcion: 'Energía obtenida por atrapar basura correctamente',
     );
+  }
+
+  // 🔽 MÉTODO MEJORADO: Transacción para usar el chatbot con mejor logging
+  Future<bool> transaccionChatbot() async {
+    print('🔄 INICIANDO transaccionChatbot...');
+
+    if (currentUser == null) {
+      print('❌ ERROR: Usuario no autenticado');
+      return false;
+    }
+
+    final userId = currentUser!.uid;
+    print('🔍 Usuario actual: $userId');
+
+    try {
+      // Primero verificamos si tiene suficiente energía
+      print('📋 Obteniendo mascota del usuario...');
+      final mascotaSnapshot = await getMascotaDelUsuario();
+
+      if (mascotaSnapshot.exists) {
+        final mascotaData = mascotaSnapshot.data() as Map<String, dynamic>;
+        final energiaActual = mascotaData['energia'] ?? 0;
+        final mascotaId = mascotaSnapshot.id;
+
+        print('📊 DATOS MASCOTA - ID: $mascotaId, Energía: $energiaActual, Tipo: ${energiaActual.runtimeType}');
+
+        if (energiaActual < 5) {
+          print('❌ ENERGÍA INSUFICIENTE: Tiene $energiaActual, necesita 5');
+          return false;
+        }
+
+        print('✅ ENERGÍA SUFICIENTE: Procediendo con transacción...');
+
+        // Realizar la transacción (restar 5 energía, sumar 5 puntos)
+        print('🔄 Llamando a crearTransaccionChatbot...');
+        await transaccionesService.crearTransaccionChatbot(
+          userId: userId,
+          mascotaId: mascotaId,
+        );
+
+        print('✅ TRANSACCIÓN EXITOSA');
+        return true;
+      } else {
+        print('❌ ERROR: No se encontró mascota para el usuario');
+        return false;
+      }
+    } catch (e) {
+      print('❌ ERROR CRÍTICO en transaccionChatbot: $e');
+      print('🔍 Stack trace: ${e.toString()}');
+      return false;
+    }
+  }
+
+  // Método temporal para debugging
+  Future<void> debugForzarEnergia(int energia) async {
+    if (currentUser == null) return;
+
+    try {
+      final mascotaSnapshot = await getMascotaDelUsuario();
+      if (mascotaSnapshot.exists) {
+        await firestore
+            .collection('mascotas')
+            .doc(mascotaSnapshot.id)
+            .update({
+          'energia': energia,
+        });
+        print('✅ Energía forzada a $energia para debugging');
+      }
+    } catch (e) {
+      print('❌ Error al forzar energía: $e');
+    }
   }
 }
