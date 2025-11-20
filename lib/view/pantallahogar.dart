@@ -6,6 +6,8 @@ import 'package:nuevoyapita/services/authservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nuevoyapita/utils/globalcolors.dart';
 
+import 'chat_mascota_view.dart';
+
 class PantallaHogar extends StatefulWidget {
   const PantallaHogar({super.key});
 
@@ -259,8 +261,29 @@ class _PantallaHogarState extends State<PantallaHogar> {
                       ),
                     ),
 
-                    const Spacer(),
 
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Navegar al chatbot
+                          Get.to(() => const ChatPage());
+                        },
+                        icon: const Icon(Icons.chat_bubble, size: 24),
+                        label: const Text("Hablar con Chapa 🤪"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: GlobalColors.mainColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: Container(
