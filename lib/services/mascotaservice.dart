@@ -15,10 +15,10 @@ class MascotaService {
         'id': mascotaId,
         'estado': 1, // Default 1
         'nombre': 'Mascota$mascotaId', // Nombre por defecto
-        'energia': 30, // Comienza con 30 para testing
+        'energia': 0, // 🔽 Comienza con 30 para testing
         'puntos': 0, // Comienza en 0
         'cashback': 0, // Comienza en 0
-        'nivel': 0, // Comienza en 0
+        'nivel': 0, // 🔽 Comienza en 0
         'fechaRegistro': FieldValue.serverTimestamp(),
         'userId': userId, // Relación con el usuario
       });
@@ -29,7 +29,21 @@ class MascotaService {
       rethrow;
     }
   }
-
+// En MascotaService - agregar este método
+  Future<void> actualizarNombreMascota(String mascotaId, String nuevoNombre) async {
+    try {
+      await firestore
+          .collection('mascotas')
+          .doc(mascotaId)
+          .update({
+        'nombre': nuevoNombre,
+      });
+      print('✅ Nombre de mascota actualizado: $nuevoNombre');
+    } catch (e) {
+      print('❌ Error al actualizar nombre: $e');
+      rethrow;
+    }
+  }
   // Obtener mascota por usuario
   Future<DocumentSnapshot> getMascotaByUserId(String userId) async {
     try {
@@ -69,4 +83,51 @@ class MascotaService {
       rethrow;
     }
   }
+
+  // 🔽 NUEVO MÉTODO: Forzar puntos para testing del sistema de niveles
+  Future<void> debugForzarPuntos(String mascotaId, int puntos) async {
+    try {
+      await firestore
+          .collection('mascotas')
+          .doc(mascotaId)
+          .update({
+        'puntos': puntos,
+      });
+      print('✅ Puntos forzados a $puntos para debugging');
+    } catch (e) {
+      print('❌ Error al forzar puntos: $e');
+      rethrow;
+    }
+  }
+
+
+  Future<void> actualizarCashbackMascota(String mascotaId, double nuevoCashback) async {
+    try {
+      await firestore
+          .collection('mascotas')
+          .doc(mascotaId)
+          .update({
+        'cashback': nuevoCashback,
+      });
+      print('✅ Cashback actualizado: \$$nuevoCashback');
+    } catch (e) {
+      print('❌ Error actualizando cashback: $e');
+      rethrow;
+    }
+  }
+
+  Future<double> obtenerCashbackActual(String mascotaId) async {
+    try {
+      final doc = await firestore.collection('mascotas').doc(mascotaId).get();
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        return (data['cashback'] ?? 0).toDouble();
+      }
+      return 0.0;
+    } catch (e) {
+      print('Error obteniendo cashback: $e');
+      return 0.0;
+    }
+  }
+
 }
